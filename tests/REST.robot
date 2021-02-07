@@ -1,7 +1,8 @@
 *** Settings ***
-Library    HttpRequestLibrary
+Resource    ${resource_dir}${/}Libraries.robot
 
 *** Variables ***
+${resource_dir}    ${CURDIR}
 ${sessionURL}    http://www.google.com
 
 *** Test Cases ***
