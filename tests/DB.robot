@@ -1,8 +1,10 @@
 *** Settings ***
-Library    DatabaseLibrary
-Library    Process
+Resource    ${resource_dir}${/}Libraries.robot
 Suite Setup       Start H2 server
 Suite Teardown    Stop H2 Server
+
+*** Variables ***
+${resource_dir}    ${CURDIR}
 
 *** Test Cases ***
 Create Test Table
@@ -15,8 +17,10 @@ Create Test Table
 
 *** Keywords ***
 Start H2 server
+    # Putting to variable, as JPype thinks that this is named argument
+    ${DB connection string}  Set Variable  jdbc:h2:mem:robotTest;DB_CLOSE_DELAY=-1
     Start Process    java    -cp    ${maven.test.classpath}    org.h2.tools.Server    -tcp    -tcpAllowOthers
-    Connect To Database    org.h2.Driver    jdbc:h2:mem:robotTest;DB_CLOSE_DELAY=-1    sa    ${EMPTY}
+    Connect To Database    org.h2.Driver    ${DB connection string}    sa    ${EMPTY}
 
 Stop H2 server
     Disconnect From Database
