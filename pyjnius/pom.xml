@@ -6,13 +6,12 @@
   <groupId>org.github.hi-fi</groupId>
   <artifactId>robotframework-after-jython</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>robotframework-java-example</name>
+  <name>pyjnius</name>
   <url>https://github.com/Hi-Fi/robotframework-after-jython</url>
   <packaging>jar</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <browser>jbrowser</browser>
   </properties>
 
   <dependencies>

@@ -1,6 +1,9 @@
 # robotframework-after-jython
 
-Robocon 2021 presentation examples
+Robocon 2021 presentation examples.
+
+Overview of Python-Java bridges (maybe a bit more developer view) [here]
+(Overvies of these: https://talvi.net/a-brief-overview-of-python-java-bridges-in-2020.html)
 
 ## Only JVM
 
@@ -8,7 +11,7 @@ Robocon 2021 presentation examples
 
 Current RF approach of running is to use Jython. This is the approach that is surely going away, as Jython supports only Python 2 which has been discontinued from April 2020. Also because of the age of Jython, it could easily have issues with newer JDKs.
 
-Example simplified from https://github.com/Hi-Fi/robotframework-java-example.
+Example simplified from https://github.com/Hi-Fi/robotframework-after-jython.
 
 Pros:
 - Cross OS
@@ -53,6 +56,7 @@ Cons:
 - Not possible to run other than whitelisted Python packages for sure
 - Uses OS specific libraries, so installation "as hard" as Python.
 - Not available at Maven central (see [issue](https://github.com/oracle/graalpython/issues/96))
+- No Windows support
 
 ## Python + JVM
 
@@ -74,10 +78,27 @@ JPype allows to interact with Java classes directly from Python code. In RF case
 that would offer library to RF.
 
 Cons:
+- Type casting needs to be done manually (one time thing in the wrapper library)
 - "Packageless" libraries can't be imported (As those can't be imported with Java). Can be solved by making a wrapper.
+
+### Pyjnius
+
+Quite like JPype. A bit harder (for dependency sake) to take in use, but a bit easier for type casting.
+
+Pros:
+- Handles primitive type casting (e.g. strings) automacally.
+- Handles multiple invocations self.
+
+Cons:
+- More requirements than JPype
+- "Packageless" libraries can't be imported (As those can't be imported with Java). Can be solved by making a wrapper.
+
 
 ### Py4J
 
-Quite similar to JPype, but requires more manual work.
+More similar to remote library than JPype or Pyjnius. JVM has to be started before Python execution, as Python just calls Java gateway.
 
+Cons:
+- Port handling
+- A bit more complicated than ones which handle JVM self.
 
