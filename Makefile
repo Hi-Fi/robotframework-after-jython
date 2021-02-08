@@ -22,3 +22,12 @@ jpype: jpype-build
 
 jpype-shell: jpype-build
 	docker container run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) $(base_name)-jpype bash
+
+pyjnius-build:
+	docker image build . -f $(CURDIR)/pyjnius/Dockerfile -t $(base_name)-pyjnius
+
+pyjnius: pyjnius-build
+	docker container run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) $(base_name)-pyjnius mvn verify -f pyjnius/pom.xml
+
+pyjnius-shell: pyjnius-build
+	docker container run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) $(base_name)-pyjnius bash

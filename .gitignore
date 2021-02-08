@@ -5,3 +5,5 @@ target
 .project
 __pycache__
 .settings
+*.html
+output.xml
