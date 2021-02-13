@@ -1,0 +1,29 @@
+name: Test approaches
+
+on:
+ push:
+
+jobs:
+  run-tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        approach: [ 'jython', 'pyjnius', 'py4j', 'jpype' ]
+    runs-on: ubuntu-latest
+
+    name: Execute tests using library through ${{ matrix.approach }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: marceloprado/has-changed-path@v1
+        id: changed-front
+        with:
+          paths: ${{ matrix.approach }} python_library src tests .github/workflows
+
+      - name: Run tests
+        if: steps.changed-front.outputs.changed == 'true'
+        run: |
+          make ${{ matrix.approach }}
