@@ -6,7 +6,7 @@
   <groupId>org.github.hi-fi</groupId>
   <artifactId>robotframework-after-jython</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>py4j</name>
+  <name>remote</name>
   <url>https://github.com/Hi-Fi/robotframework-after-jython</url>
   <packaging>jar</packaging>
 
@@ -32,13 +32,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>py4j</groupId>
-      <artifactId>py4j</artifactId>
-      <version>0.0.1</version>
+      <groupId>org.robotframework</groupId>
+      <artifactId>jrobotremoteserver</artifactId>
+      <version>4.0.1</version>
     </dependency>
   </dependencies>
   <build>
-    <!-- <sourceDirectory>${project.basedir}/../src/main/java</sourceDirectory> -->
+    <sourceDirectory>${project.basedir}/../src/main/java</sourceDirectory>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -56,7 +56,7 @@
               <!-- Classpath is used in example tests to start H2 -->
               <variable>maven.test.classpath:${maven.test.classpath}</variable>
               <variable>resource_dir:${project.basedir}</variable>
-              <variable>port:${py4j.gatewayserver.port}</variable>
+              <variable>port:${jrobotremoteserver.port}</variable>
             </variables>
             <!-- Python library location -->
             <extraPathDirectories>
@@ -108,7 +108,7 @@
             <phase>process-resources</phase>
             <configuration>
               <portNames>
-                <portName>py4j.gatewayserver.port</portName>
+                <portName>jrobotremoteserver.port</portName>
               </portNames>
             </configuration>
           </execution>
@@ -121,22 +121,25 @@
         <executions>
           <!--Start process 1, eg., a dropwizard app dependency-->
           <execution>
-            <id>py4j-gateway-process</id>
+            <id>jrobotremoteserver-process</id>
             <phase>pre-integration-test</phase>
             <goals>
               <goal>start</goal>
             </goals>
             <configuration>
-              <name>Py4jGateway</name>
+              <name>jrobotremoteserver</name>
               <waitForInterrupt>false</waitForInterrupt>
-              <!-- <healthcheckUrl>http://localhost:${py4j.gatewayserver.port}</healthcheckUrl> -->
+              <healthcheckUrl>http://localhost:${jrobotremoteserver.port}</healthcheckUrl>
               <waitAfterLaunch>5</waitAfterLaunch>
               <arguments>
                 <argument>java</argument>
                 <argument>-cp</argument>
                 <argument>${maven.test.classpath}:${maven.runtime.classpath}</argument>
-                <argument>com.github.hi_fi.robotframework_after_jython.py4j.RobotLibraryEntryPoint</argument>
-                <argument>${py4j.gatewayserver.port}</argument>
+                <argument>org.robotframework.remoteserver.RemoteServer</argument>
+                <argument>--library</argument>
+                <argument>com.github.hi_fi.robotframework_after_jython.JavaLibrary:/</argument>
+                <argument>--port</argument>
+                <argument>${jrobotremoteserver.port}</argument>
               </arguments>
             </configuration>
           </execution>
@@ -161,8 +164,8 @@
       <build>
         <plugins>
           <plugin>
-          <groupId>org.robotframework</groupId>
-          <artifactId>robotframework-maven-plugin</artifactId>
+            <groupId>org.robotframework</groupId>
+            <artifactId>robotframework-maven-plugin</artifactId>
             <executions>
               <execution>
                 <phase>integration-test</phase>
@@ -205,8 +208,8 @@
                     <argument>${project.basedir}/../python_library</argument>
                     <argument>--pythonpath</argument>
                     <argument>${project.basedir}</argument>
-                    <argument>Py4jLibrary::${py4j.gatewayserver.port}</argument>
-                    <argument>${project.basedir}/target/Py4jLibrary.html</argument>
+                    <argument>Remote::http://127.0.0.1:${jrobotremoteserver.port}</argument>
+                    <argument>${project.basedir}/target/RemoteLibrary.html</argument>
                   </arguments>
                 </configuration>
               </execution>

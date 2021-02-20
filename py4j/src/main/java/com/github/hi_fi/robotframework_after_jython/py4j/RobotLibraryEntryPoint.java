@@ -1,4 +1,4 @@
-package com.github.hi_fi.py4j;
+package com.github.hi_fi.robotframework_after_jython.py4j;
 
 import java.util.ArrayList;
 import org.robotframework.javalib.library.AnnotationLibrary;

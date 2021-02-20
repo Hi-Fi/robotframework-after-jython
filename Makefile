@@ -1,6 +1,6 @@
 base_name = robotframework-after-jython
 
-.PHONY: jython
+.PHONY: jython remote jpype pyjnius py4j
 
 jython:
 	docker container run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) maven:3.6-openjdk-8 mvn verify -f jython/pom.xml
@@ -11,8 +11,17 @@ jython-shell:
 jython-updates:
 	docker container run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) maven:3.6-openjdk-8 mvn versions:display-dependency-updates -f jython/pom.xml
 
-graalpython-shell:
-	docker container run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) ghcr.io/graalvm/graalvm-ce:java8-21.0.0 bash
+jython-remote:
+	docker container run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) maven:3.6-openjdk-8 mvn verify -f jython-remote/pom.xml
+
+jython-remote-shell:
+	docker container run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) maven:3.6-openjdk-8 bash
+
+graalpython-build:
+	docker image build . -f $(CURDIR)/graalpython/Dockerfile -t $(base_name)-graalpython
+
+graalpython-shell: graalpython-build
+	docker container run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) $(base_name)-graalpython bash
 
 jpype-build:
 	docker image build . -f $(CURDIR)/jpype/Dockerfile -t $(base_name)-jpype
@@ -40,3 +49,9 @@ py4j: py4j-build
 
 py4j-shell: py4j-build
 	docker container run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) $(base_name)-py4j bash
+
+remote-build:
+	docker image build . -f $(CURDIR)/remote/Dockerfile -t $(base_name)-remote
+
+remote: remote-build
+	docker container run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) $(base_name)-remote mvn verify -f remote/pom.xml

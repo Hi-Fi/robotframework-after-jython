@@ -26,7 +26,6 @@ class JavaLib:
         else:
             jpype.startJVM(classpath=classpath.split(":"))
         JavaLibrary = importlib.import_module(library)
-        #from com.github.hi_fi import JavaLibrary
         self.javaLibrary = JavaLibrary()
 
     def get_keyword_names(self):
@@ -38,9 +37,6 @@ class JavaLib:
         return keywords
 
     def run_keyword(self, keyword: str, args, kwargs):
-        # TypeError: No matching overloads found for org.robotframework.javalib.library.AnnotationLibrary.runKeyword(str,tuple,dict), options are:
-        # public java.lang.Object org.robotframework.javalib.library.AnnotationLibrary.runKeyword(java.lang.String,java.util.List,java.util.Map)
-        # public java.lang.Object org.robotframework.javalib.library.AnnotationLibrary.runKeyword(java.lang.String,java.util.List)
         import java
         return self.javaLibrary.runKeyword(JString(keyword), java.util.ArrayList(args), java.util.HashMap(kwargs))
 

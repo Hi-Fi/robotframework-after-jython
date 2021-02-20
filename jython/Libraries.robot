@@ -1,6 +1,5 @@
 *** Settings ***
-Library    DatabaseLibrary
 Library    Process
 Library    DateFormatterLibrary
 Library    DateTime
-Library    HttpRequestLibrary
+Library    com.github.hi_fi.robotframework_after_jython.JavaLibrary
