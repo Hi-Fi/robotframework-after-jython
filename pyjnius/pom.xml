@@ -41,6 +41,28 @@
           <artifactId>exec-maven-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.robotframework</groupId>
+          <artifactId>robotframework-maven-plugin</artifactId>
+          <version>1.8.0</version>
+          <configuration>
+            <logLevel>TRACE:INFO</logLevel>
+            <variables>
+              <!-- Classpath is used in example tests to start H2 -->
+              <variable>maven.test.classpath:${maven.test.classpath}</variable>
+              <variable>resource_dir:${project.basedir}</variable>
+            </variables>
+            <!-- Python library location -->
+            <extraPathDirectories>
+              <extraPathDirectory>${project.basedir}/../python_library</extraPathDirectory>
+              <extraPathDirectory>${project.basedir}</extraPathDirectory>
+            </extraPathDirectories>
+            <testCasesDirectory>${project.basedir}/../tests</testCasesDirectory>
+            <externalRunner>
+              <runWithPython>true</runWithPython>
+            </externalRunner>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -78,30 +100,13 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
+            <groupId>org.robotframework</groupId>
+            <artifactId>robotframework-maven-plugin</artifactId>
             <executions>
               <execution>
-                <phase>verify</phase>
                 <goals>
-                  <goal>exec</goal>
+                  <goal>run</goal>
                 </goals>
-                <configuration>
-                  <executable>robot</executable>
-                  <arguments>
-                    <argument>--variable</argument>
-                    <argument>maven.test.classpath:${maven.test.classpath}:${maven.runtime.classpath}</argument>
-                    <argument>--variable</argument>
-                    <argument>resource_dir:${project.basedir}</argument>
-                    <argument>--pythonpath</argument>
-                    <argument>${project.basedir}/../python_library</argument>
-                    <argument>--pythonpath</argument>
-                    <argument>${project.basedir}</argument>
-                    <argument>--loglevel</argument>
-                    <argument>TRACE:INFO</argument>
-                    <argument>${project.basedir}/../tests</argument>
-                  </arguments>
-                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -130,8 +135,8 @@
                     <argument>${project.basedir}/../python_library</argument>
                     <argument>--pythonpath</argument>
                     <argument>${project.basedir}</argument>
-                    <argument>JavaLib::com.github.hi_fi.JavaLibrary::${maven.test.classpath}:${maven.runtime.classpath}</argument>
-                    <argument>${project.basedir}/JavaLib.html</argument>
+                    <argument>JavaLib::com.github.hi_fi.robotframework_after_jython.JavaLibrary::${maven.test.classpath}:${maven.runtime.classpath}</argument>
+                    <argument>${project.basedir}/target/JavaLib.html</argument>
                   </arguments>
                 </configuration>
               </execution>

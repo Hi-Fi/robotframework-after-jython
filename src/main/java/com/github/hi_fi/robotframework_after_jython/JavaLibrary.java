@@ -1,4 +1,4 @@
-package com.github.hi_fi;
+package com.github.hi_fi.robotframework_after_jython;
 
 import java.util.ArrayList;
 

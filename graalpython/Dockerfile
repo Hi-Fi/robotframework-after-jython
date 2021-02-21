@@ -12,10 +12,13 @@ RUN gu install python && \
 
 USER robot
 
-RUN mkdir -p ~/rf && \
-    cd ~/rf && \
-    graalpython -m ginstall install setuptools && \
-    wget https://github.com/robotframework/robotframework/archive/v3.2.2.tar.gz && \
-    tar xzvf v3.2.2.tar.gz && \
-    cd robotframework-3.2.2 && \
-    python setup.py install --user
+RUN cd && \
+    graalpython -m venv rf
+
+# RUN mkdir -p ~/rf && \
+#     cd ~/rf && \
+#     graalpython -m ginstall install setuptools && \
+#     wget https://github.com/robotframework/robotframework/archive/v3.2.2.tar.gz && \
+#     tar xzvf v3.2.2.tar.gz && \
+#     cd robotframework-3.2.2 && \
+#     python setup.py install --user
