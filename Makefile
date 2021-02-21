@@ -53,5 +53,8 @@ py4j-shell: py4j-build
 remote-build:
 	docker image build . -f $(CURDIR)/remote/Dockerfile -t $(base_name)-remote
 
+remote-shell: remote-build
+	docker container run --rm -it -v $(CURDIR):$(CURDIR) -w $(CURDIR) $(base_name)-remote bash
+
 remote: remote-build
 	docker container run --rm -v $(CURDIR):$(CURDIR) -w $(CURDIR) $(base_name)-remote mvn verify -f remote/pom.xml

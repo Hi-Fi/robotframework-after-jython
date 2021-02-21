@@ -6,19 +6,20 @@ RUN microdnf update -y&& \
 
 RUN gu install python && \
     gu install native-image && \
-    # gu rebuild-images && \
-    ln -s /usr/bin/graalpython /usr/bin/python && \
     useradd robot
 
 USER robot
 
-RUN cd && \
-    graalpython -m venv rf
+WORKDIR /home/robot
 
-# RUN mkdir -p ~/rf && \
-#     cd ~/rf && \
-#     graalpython -m ginstall install setuptools && \
-#     wget https://github.com/robotframework/robotframework/archive/v3.2.2.tar.gz && \
-#     tar xzvf v3.2.2.tar.gz && \
-#     cd robotframework-3.2.2 && \
-#     python setup.py install --user
+RUN graalpython -m venv rf
+
+ENV PYTHONPATH /home/robot/.local/lib/python3.8/site-packages/
+
+RUN source rf/bin/activate && \
+    wget https://github.com/robotframework/robotframework/archive/v3.2.2.tar.gz && \
+    tar xzvf v3.2.2.tar.gz && \
+    cd robotframework-3.2.2 && \
+    python setup.py install --user && \
+    cd .. && \
+    rm -rf v3.2.2.tar.gz robotframework-3.2.2
