@@ -2,8 +2,7 @@
 
 Robocon 2021 presentation examples.
 
-Overview of Python-Java bridges (maybe a bit more developer view) [here]
-(Overvies of these: https://talvi.net/a-brief-overview-of-python-java-bridges-in-2020.html)
+Overview of Python-Java bridges (maybe a bit more developer view) [here](https://talvi.net/a-brief-overview-of-python-java-bridges-in-2020.html).
 
 ## Only JVM
 
